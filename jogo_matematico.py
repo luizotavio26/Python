@@ -6,6 +6,7 @@ class Jogador:
         self.nome = nome
         self.pontos = 0  # Inicializa pontos como 0
 
+
 class Jogo:
     def __init__(self):
         self.s = ["+", "-", "x", "/"]
@@ -91,7 +92,7 @@ def vamosjogar():
     else:
         print(f"{player2.nome} venceu!")
 
-# Inicia o jogo
+# Chama a função e inicia o jogo 
 vamosjogar()
 
 # %%
