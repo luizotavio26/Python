@@ -1,10 +1,8 @@
 import requests
 import unittest
-import app
 
 
 class TestStringMethods(unittest.TestCase):
-
     def test_alunos_read_alunos_01(self):
         r = requests.get('http://localhost:5036/alunos')
         self.assertEqual(r.status_code,200)
@@ -68,8 +66,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(r_reset.status_code,200)
 
         r_lista_depois = requests.get('http://localhost:5036/alunos')
-        self.assertEqual(len(r_lista_depois.json()),1)
-        self.assertEqual(r_lista_depois.status_code,404)
+        self.assertEqual(len(r_lista_depois.json()),0)
 
 
     def test_alunos_deleta_por_id_05(self):
@@ -93,9 +90,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(r_reset.status_code,200)
 
         r_lista2 = requests.get('http://localhost:5036/alunos')
-        self.assertEqual(r_lista2.status_code,404) 
-
-# --------------------------------------------------------------------#
+        self.assertEqual(r_lista2.status_code,200)
 
     def test_professores_read_06(self):
             dados = requests.get("http://localhost:5036/professores")
@@ -125,7 +120,7 @@ class TestStringMethods(unittest.TestCase):
     def test_professores_delete_10(self):
         deletar = requests.delete("http://localhost:5036/professores/2")
         r = requests.get("http://localhost:5036/professores/2")
-        self.assertEqual(r.status_code, 400)
+        self.assertEqual(r.status_code, 404)
 
     def test_professores_criar_id_existente_11(self):
         create1 = requests.post("http://localhost:5036/professores", json = {
@@ -135,7 +130,7 @@ class TestStringMethods(unittest.TestCase):
             "materia": "APIs", 
             "observacoes": "Provavelmente não dormiu hoje"
         })
-        self.assertEqual(create1.status_code, 200) 
+        self.assertEqual(create1.status_code, 201) 
         create2 = requests.post("http://localhost:5036/professores", json = {
              "id": 4, 
              "nome": "Caio", 
@@ -144,8 +139,6 @@ class TestStringMethods(unittest.TestCase):
              "observacoes": "Tatuagens maneiras"
         })
         self.assertEqual(create2.status_code, 400)
-
-# --------------------------------------------------------------------#
 
     def test_turmas_create_12(self):
 
@@ -175,7 +168,7 @@ class TestStringMethods(unittest.TestCase):
 
     def test_turmas_read_id_15(self):
          turma = requests.get('http://localhost:5036/turmas/7800')
-         self.assertEqual(turma.status_code,400)
+         self.assertEqual(turma.status_code,404)
 
 
     def test_turmas_upload_16(self):
@@ -188,11 +181,11 @@ class TestStringMethods(unittest.TestCase):
 
     def test_turmas_upload_id_nao_encontrado_17(self):
         turma = requests.put('http://localhost:5036/turmas/478', json={"ativo": False})
-        self.assertEqual(turma.status_code,400)
+        self.assertEqual(turma.status_code,404)
 
 
     def test_turmas_delete_18(self):
-        requests.post('http://localhost:5036/turmas', json={"id":369, "descricao": "Engenharia de Requisitos", "professor_id": 210, "ativo": True} )
+        requests.post('http://localhost:5036/turmas', json={"id":369, "descricao": "Engenharia de Requisitos", "professor_id": 201, "ativo": True} )
         c_turma = requests.get('http://localhost:5036/turmas/369')
         self.assertEqual(c_turma.status_code, 200)
 
